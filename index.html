@@ -7,104 +7,23 @@
   <style>
     :root{--bg:#0a0d12;--panel:#11161f;--panel2:#171d27;--panel3:#1d2430;--text:#edf2f7;--muted:#9aa4b2;--line:#232c39;--accent:#ff4655;--green:#22c55e;--shadow:0 10px 30px rgba(0,0,0,.35);--radius:18px;--role-duelist:#ef4444;--role-controller:#8b5cf6;--role-controller-secondary:#6d28d9;--role-initiator:#06b6d4;--role-sentinel:#f59e0b;--role-flex:#64748b;--role-random:#22c55e;}
     *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at top right, rgba(255,70,85,.12), transparent 25%),radial-gradient(circle at top left, rgba(34,197,94,.08), transparent 22%),linear-gradient(180deg, #0a0d12 0%, #0c1016 100%);}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:linear-gradient(180deg,#0a0d12,#0c1016)}
     .app{max-width:1280px;margin:0 auto;padding:20px}
-    .header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(10,13,18,.82);border-bottom:1px solid rgba(255,255,255,.04);margin:-20px -20px 24px;padding:18px 20px 16px}
+    .header{position:sticky;top:0;z-index:20;background:rgba(10,13,18,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);margin:-20px -20px 24px;padding:18px 20px 16px}
     .header-inner{max-width:1280px;margin:0 auto}
-    .brand-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(180deg, rgba(255,70,85,.18), rgba(255,70,85,.08));border:1px solid rgba(255,70,85,.2);box-shadow:var(--shadow)}
-    .logo svg{width:26px;height:26px;fill:var(--accent)}
-    h1{margin:0;font-size:1.4rem;letter-spacing:.3px}
-    .subtitle{margin-top:2px;color:var(--muted);font-size:.92rem}
-    .stepper{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .step{display:flex;align-items:center;gap:10px}
-    .dot{width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);display:grid;place-items:center;font-weight:800;transition:.25s ease}
-    .dot.active{border-color:rgba(255,70,85,.45);color:#fff;background:linear-gradient(180deg, rgba(255,70,85,.18), rgba(255,70,85,.06));box-shadow:0 0 0 4px rgba(255,70,85,.08)}
-    .dot.done{background:linear-gradient(180deg, rgba(34,197,94,.25), rgba(34,197,94,.09));border-color:rgba(34,197,94,.45);color:#d1fae5}
-    .step-label{color:var(--muted);font-size:.92rem;min-width:max-content}
-    .step.active .step-label,.step.done .step-label{color:var(--text)}
-    .connector{width:42px;height:2px;background:var(--line);border-radius:99px}
-    .connector.done{background:linear-gradient(90deg, var(--green), #7ee7a2)}
-
-    .screen{display:none;animation:fadeUp .45s ease both}
-    .screen.active{display:block}
-    .panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap}
-    .topbar h2{margin:0;font-size:1.15rem}
-    .muted{color:var(--muted)}
-
-    .map-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:16px}
-    .map-card{background:linear-gradient(180deg, var(--panel2), var(--panel));border:1px solid var(--line);border-radius:18px;padding:14px 10px 12px;text-align:center;cursor:pointer;transition:transform .2s ease,border-color .2s ease,background .2s ease,opacity .2s ease;min-height:164px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:slideIn .35s ease both}
-    .map-card:hover{transform:translateY(-3px);border-color:rgba(255,70,85,.32);background:linear-gradient(180deg, #1b2230, #121823)}
-    .map-card.selected{border-color:rgba(255,70,85,.5);box-shadow:0 0 0 4px rgba(255,70,85,.08), var(--shadow)}
-    .map-icon{width:108px;height:108px;border-radius:999px;overflow:hidden;border:2px solid rgba(255,255,255,.08);background:radial-gradient(circle at 30% 30%, #232b38, #131923);display:grid;place-items:center;margin-bottom:10px;position:relative}
-    .map-icon img{width:100%;height:100%;object-fit:cover;display:block}
-    .map-fallback{font-weight:900;letter-spacing:1px;font-size:1.15rem;color:#dce3ea}
-    .map-name{font-weight:700}
-
-    .players-wrap{display:grid;gap:16px}
-    .count-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .count-dots{display:flex;gap:8px}
-    .count-dot{width:14px;height:14px;border-radius:999px;background:#1d2430;border:1px solid var(--line);transition:.2s ease}
-    .count-dot.filled{background:linear-gradient(180deg, var(--green), #34d399);border-color:rgba(34,197,94,.45);box-shadow:0 0 0 4px rgba(34,197,94,.08)}
-    .players-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px}
-    .player-tile{padding:14px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg, var(--panel2), var(--panel));cursor:pointer;transition:.2s ease;user-select:none;position:relative;overflow:hidden}
-    .player-tile:hover{transform:translateY(-2px);border-color:rgba(255,70,85,.26)}
-    .player-tile.selected{border-color:rgba(34,197,94,.52);box-shadow:0 0 0 4px rgba(34,197,94,.08);background:linear-gradient(180deg, rgba(34,197,94,.12), rgba(255,255,255,.02))}
-    .player-name{font-weight:800;margin-bottom:4px}
-    .player-hint{color:var(--muted);font-size:.84rem}
-    .check{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:999px;display:grid;place-items:center;font-size:.82rem;font-weight:900;color:#052e16;background:#86efac;opacity:0;transform:scale(.85);transition:.18s ease}
-    .player-tile.selected .check{opacity:1;transform:scale(1)}
-
-    .actions{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .left-actions,.right-actions{display:flex;gap:10px;flex-wrap:wrap}
-    button{border:none;cursor:pointer;color:white;font-weight:800;letter-spacing:.2px;border-radius:14px;padding:12px 16px;transition:.2s ease;font-size:.95rem}
-    .btn-primary{background:linear-gradient(180deg, var(--accent), #e11d48);box-shadow:0 10px 24px rgba(255,70,85,.18)}
-    .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
-    .btn-secondary{background:var(--panel3);border:1px solid var(--line);color:var(--text)}
-    .btn-secondary:hover{transform:translateY(-1px);border-color:#334155}
-    .btn-ghost{background:transparent;color:var(--muted);border:1px dashed var(--line)}
-    .btn-primary[disabled], .btn-secondary[disabled]{opacity:.45;cursor:not-allowed;transform:none !important}
-
-    .draft-layout{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}
-    .side-stack{display:grid;gap:18px}
-    .meta-warning{padding:14px 16px;border-radius:16px;border:1px solid rgba(245,158,11,.2);background:linear-gradient(180deg, rgba(245,158,11,.1), rgba(245,158,11,.05));color:#fcd34d}
-    .comp-grid{display:grid;gap:12px}
-    .comp-card{border:1px solid var(--line);background:linear-gradient(180deg, var(--panel2), var(--panel));border-radius:16px;padding:14px}
-    .comp-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
-    .tier{padding:6px 10px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.22);color:#bbf7d0;font-size:.8rem;font-weight:800}
-    .comp-list{display:flex;flex-wrap:wrap;gap:8px}
-    .agent-pill{padding:8px 10px;border-radius:999px;background:#141b25;border:1px solid var(--line);font-size:.88rem}
-
-    .draft-main{display:grid;gap:14px}
-    .player-card{border:1px solid var(--line);background:linear-gradient(180deg, var(--panel2), var(--panel));border-radius:18px;padding:16px;animation:fadeUp .35s ease both}
-    .player-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-    .player-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .badge{padding:6px 10px;border-radius:999px;font-size:.78rem;font-weight:900;letter-spacing:.3px;border:1px solid transparent;text-transform:uppercase}
-    .role-duelist{background:rgba(239,68,68,.12);color:#fca5a5;border-color:rgba(239,68,68,.25)}
-    .role-controller{background:rgba(139,92,246,.12);color:#d8b4fe;border-color:rgba(139,92,246,.25)}
-    .role-controller_secondary{background:rgba(109,40,217,.12);color:#c4b5fd;border-color:rgba(109,40,217,.25)}
-    .role-initiator{background:rgba(6,182,212,.12);color:#a5f3fc;border-color:rgba(6,182,212,.25)}
-    .role-sentinel{background:rgba(245,158,11,.12);color:#fde68a;border-color:rgba(245,158,11,.25)}
-    .role-flex{background:rgba(100,116,139,.14);color:#cbd5e1;border-color:rgba(100,116,139,.25)}
-    .role-random{background:rgba(34,197,94,.12);color:#bbf7d0;border-color:rgba(34,197,94,.25)}
-
-    .suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-    .chip{border:none;border-radius:999px;padding:9px 12px;background:#141b25;border:1px solid var(--line);color:#e5edf5;cursor:pointer;font-weight:700;transition:.2s ease}
-    .chip:hover{border-color:rgba(255,70,85,.28);transform:translateY(-1px)}
-    .chip.taken{opacity:.35;cursor:not-allowed;text-decoration:line-through}
-    .player-controls{display:grid;grid-template-columns:minmax(220px, 330px) 1fr;gap:12px;align-items:center}
-    select{width:100%;background:#0f141c;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:none;font-size:.95rem}
-    .confirm{min-height:24px;color:#86efac;font-weight:800}
-    .confirm.empty{color:var(--muted);font-weight:600}
-
-    .footer-note{color:var(--muted);font-size:.88rem;margin-top:4px}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
-    @media (max-width: 1024px){.draft-layout{grid-template-columns:1fr}}
-    @media (max-width: 720px){.player-controls{grid-template-columns:1fr}.brand-row{align-items:flex-start;flex-direction:column}.map-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}.players-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}}
-    @media (max-width: 460px){.map-grid,.players-grid{grid-template-columns:1fr 1fr}.header{padding:16px}.app{padding:16px}}
+    .brand-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:14px}.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(180deg, rgba(255,70,85,.18), rgba(255,70,85,.08));border:1px solid rgba(255,70,85,.2)}
+    .logo svg{width:26px;height:26px;fill:var(--accent)} h1{margin:0;font-size:1.4rem}.subtitle{margin-top:2px;color:var(--muted);font-size:.92rem}
+    .stepper{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.step{display:flex;align-items:center;gap:10px}.dot{width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);display:grid;place-items:center;font-weight:800}.dot.active{border-color:rgba(255,70,85,.45);color:#fff;background:rgba(255,70,85,.14)}.dot.done{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.45);color:#d1fae5}.step-label{color:var(--muted);font-size:.92rem}.step.active .step-label,.step.done .step-label{color:var(--text)}.connector{width:42px;height:2px;background:var(--line);border-radius:99px}.connector.done{background:linear-gradient(90deg,var(--green),#7ee7a2)}
+    .screen{display:none;animation:fadeUp .35s ease both}.screen.active{display:block}.panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap}.topbar h2{margin:0;font-size:1.15rem}.muted{color:var(--muted)}
+    .map-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:16px}.map-card{background:linear-gradient(180deg, var(--panel2), var(--panel));border:1px solid var(--line);border-radius:18px;padding:14px 10px 12px;text-align:center;cursor:pointer;transition:transform .2s ease,border-color .2s ease;min-height:164px;display:flex;flex-direction:column;align-items:center;justify-content:center}.map-card:hover{transform:translateY(-3px);border-color:rgba(255,70,85,.32)}.map-card.selected{border-color:rgba(255,70,85,.5);box-shadow:0 0 0 4px rgba(255,70,85,.08)}.map-icon{width:108px;height:108px;border-radius:999px;overflow:hidden;border:2px solid rgba(255,255,255,.08);background:radial-gradient(circle at 30% 30%, #232b38, #131923);display:grid;place-items:center;margin-bottom:10px}.map-icon img{width:100%;height:100%;object-fit:cover}.map-fallback{font-weight:900;letter-spacing:1px;font-size:1.15rem;color:#dce3ea}.map-name{font-weight:700}
+    .players-wrap{display:grid;gap:16px}.count-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.count-dots{display:flex;gap:8px}.count-dot{width:14px;height:14px;border-radius:999px;background:#1d2430;border:1px solid var(--line)}.count-dot.filled{background:linear-gradient(180deg,var(--green),#34d399);border-color:rgba(34,197,94,.45)}.players-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px}.player-tile{padding:14px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg, var(--panel2), var(--panel));cursor:pointer;position:relative;overflow:hidden}.player-tile.selected{border-color:rgba(34,197,94,.52);box-shadow:0 0 0 4px rgba(34,197,94,.08)}.player-name{font-weight:800;margin-bottom:4px}.player-hint{color:var(--muted);font-size:.84rem}.check{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:999px;display:grid;place-items:center;font-size:.82rem;font-weight:900;color:#052e16;background:#86efac;opacity:0}.player-tile.selected .check{opacity:1}
+    .actions{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.left-actions,.right-actions{display:flex;gap:10px;flex-wrap:wrap}button{border:none;cursor:pointer;color:white;font-weight:800;border-radius:14px;padding:12px 16px;transition:.2s ease;font-size:.95rem}.btn-primary{background:linear-gradient(180deg,var(--accent),#e11d48)}.btn-secondary{background:var(--panel3);border:1px solid var(--line);color:var(--text)}.btn-ghost{background:transparent;color:var(--muted);border:1px dashed var(--line)}
+    .draft-layout{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}.side-stack{display:grid;gap:18px}.meta-warning{padding:14px 16px;border-radius:16px;border:1px solid rgba(245,158,11,.2);background:rgba(245,158,11,.08);color:#fcd34d}.comp-grid{display:grid;gap:12px}.comp-card{border:1px solid var(--line);background:linear-gradient(180deg, var(--panel2), var(--panel));border-radius:16px;padding:14px}.comp-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.tier{padding:6px 10px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.22);color:#bbf7d0;font-size:.8rem;font-weight:800}.comp-list{display:flex;flex-wrap:wrap;gap:8px}.agent-pill{padding:8px 10px;border-radius:999px;background:#141b25;border:1px solid var(--line);font-size:.88rem}
+    .draft-main{display:grid;gap:14px}.player-card{border:1px solid var(--line);background:linear-gradient(180deg, var(--panel2), var(--panel));border-radius:18px;padding:16px}.player-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.player-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.badge{padding:6px 10px;border-radius:999px;font-size:.78rem;font-weight:900;letter-spacing:.3px;border:1px solid transparent;text-transform:uppercase}.role-duelist{background:rgba(239,68,68,.12);color:#fca5a5;border-color:rgba(239,68,68,.25)}.role-controller{background:rgba(139,92,246,.12);color:#d8b4fe;border-color:rgba(139,92,246,.25)}.role-controller_secondary{background:rgba(109,40,217,.12);color:#c4b5fd;border-color:rgba(109,40,217,.25)}.role-initiator{background:rgba(6,182,212,.12);color:#a5f3fc;border-color:rgba(6,182,212,.25)}.role-sentinel{background:rgba(245,158,11,.12);color:#fde68a;border-color:rgba(245,158,11,.25)}.role-flex{background:rgba(100,116,139,.14);color:#cbd5e1;border-color:rgba(100,116,139,.25)}.role-random{background:rgba(34,197,94,.12);color:#bbf7d0;border-color:rgba(34,197,94,.25)}
+    .suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.chip{border:none;border-radius:999px;padding:9px 12px;background:#141b25;border:1px solid var(--line);color:#e5edf5;cursor:pointer;font-weight:700}.chip.taken{opacity:.35;cursor:not-allowed;text-decoration:line-through}.player-controls{display:grid;grid-template-columns:minmax(220px,330px) 1fr;gap:12px;align-items:center}select{width:100%;background:#0f141c;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:none;font-size:.95rem}.confirm{min-height:24px;color:#86efac;font-weight:800}.confirm.empty{color:var(--muted);font-weight:600}
+    .footer-note{color:var(--muted);font-size:.88rem;margin-top:4px}@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@media (max-width:1024px){.draft-layout{grid-template-columns:1fr}}@media (max-width:720px){.player-controls{grid-template-columns:1fr}.brand-row{flex-direction:column;align-items:flex-start}.map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.players-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:460px){.map-grid,.players-grid{grid-template-columns:1fr 1fr}.header{padding:16px}.app{padding:16px}}
   </style>
 </head>
 <body>
@@ -113,32 +32,13 @@
       <div class="header-inner">
         <div class="brand-row">
           <div class="brand">
-            <div class="logo" aria-hidden="true">
-              <svg viewBox="0 0 64 64">
-                <path d="M4 12h23L14 52H4V12zm33 0h23v40H47L37 33V12z"></path>
-              </svg>
-            </div>
-            <div>
-              <h1>Valorant Draft</h1>
-              <div class="subtitle">Monte o draft por mapa, função e pool de agentes</div>
-            </div>
+            <div class="logo" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M4 12h23L14 52H4V12zm33 0h23v40H47L37 33V12z"></path></svg></div>
+            <div><h1>Valorant Draft</h1><div class="subtitle">Monte o draft por mapa, função e pool de agentes</div></div>
           </div>
-
           <div class="stepper" id="stepper">
-            <div class="step" data-step="1">
-              <div class="dot active">1</div>
-              <div class="step-label">Mapa</div>
-            </div>
-            <div class="connector"></div>
-            <div class="step" data-step="2">
-              <div class="dot">2</div>
-              <div class="step-label">Jogadores</div>
-            </div>
-            <div class="connector"></div>
-            <div class="step" data-step="3">
-              <div class="dot">3</div>
-              <div class="step-label">Draft</div>
-            </div>
+            <div class="step" data-step="1"><div class="dot active">1</div><div class="step-label">Mapa</div></div><div class="connector"></div>
+            <div class="step" data-step="2"><div class="dot">2</div><div class="step-label">Jogadores</div></div><div class="connector"></div>
+            <div class="step" data-step="3"><div class="dot">3</div><div class="step-label">Draft</div></div>
           </div>
         </div>
       </div>
@@ -146,540 +46,68 @@
 
     <section class="screen active" id="screen-1">
       <div class="panel">
-        <div class="topbar">
-          <div>
-            <h2>Passo 1 — Escolher mapa</h2>
-            <div class="muted">Selecione um mapa</div>
-          </div>
-        </div>
-
+        <div class="topbar"><div><h2>Passo 1 — Escolher mapa</h2><div class="muted">Escolha um mapa</div></div></div>
         <div class="map-grid" id="allMaps"></div>
       </div>
     </section>
 
     <section class="screen" id="screen-2">
       <div class="panel">
-        <div class="topbar">
-          <div>
-            <h2>Passo 2 — Selecionar 5 jogadores</h2>
-            <div class="muted">Escolha exatamente cinco. O botão de draft aparece ao completar 5.</div>
-          </div>
-          <div class="muted" id="selectedMapLabel"></div>
-        </div>
-
+        <div class="topbar"><div><h2>Passo 2 — Selecionar 5 jogadores</h2><div class="muted">Escolha exatamente cinco</div></div><div class="muted" id="selectedMapLabel"></div></div>
         <div class="players-wrap">
-          <div class="count-row">
-            <div><strong id="playerCountText">0</strong>/5 jogadores selecionados</div>
-            <div class="count-dots" id="countDots"></div>
-          </div>
-
+          <div class="count-row"><div><strong id="playerCountText">0</strong>/5 jogadores selecionados</div><div class="count-dots" id="countDots"></div></div>
           <div class="players-grid" id="playersGrid"></div>
         </div>
-
-        <div class="actions">
-          <div class="left-actions">
-            <button class="btn-secondary" id="backToMaps">← Voltar</button>
-          </div>
-          <div class="right-actions">
-            <button class="btn-primary" id="buildDraftBtn" style="display:none">Montar Draft →</button>
-          </div>
-        </div>
+        <div class="actions"><div class="left-actions"><button class="btn-secondary" id="backToMaps">← Voltar</button></div><div class="right-actions"><button class="btn-primary" id="buildDraftBtn" style="display:none">Montar Draft →</button></div></div>
       </div>
     </section>
 
     <section class="screen" id="screen-3">
       <div class="draft-layout">
         <aside class="side-stack">
-          <div class="panel">
-            <div class="topbar" style="margin-bottom:10px">
-              <div>
-                <h2>Passo 3 — Draft</h2>
-                <div class="muted" id="draftSummary"></div>
-              </div>
-            </div>
-            <div id="metaZone"></div>
-          </div>
-
-          <div class="panel">
-            <div class="topbar" style="margin-bottom:10px">
-              <div>
-                <h2>Composições Tier S</h2>
-                <div class="muted">2 referências do mapa selecionado</div>
-              </div>
-            </div>
-            <div class="comp-grid" id="compGrid"></div>
-          </div>
-
-          <div class="panel">
-            <div class="actions" style="margin-top:0">
-              <div class="left-actions">
-                <button class="btn-secondary" id="backToPlayers">← Voltar</button>
-              </div>
-              <div class="right-actions">
-                <button class="btn-ghost" id="restartBtn">↺ Restart</button>
-              </div>
-            </div>
-            <div class="footer-note">Randoms aparecem primeiro e, ao escolher agente, atualizam automaticamente as sugestões dos demais.</div>
-          </div>
+          <div class="panel"><div class="topbar" style="margin-bottom:10px"><div><h2>Passo 3 — Draft</h2><div class="muted" id="draftSummary"></div></div></div><div id="metaZone"></div></div>
+          <div class="panel"><div class="topbar" style="margin-bottom:10px"><div><h2>Composições Tier S</h2><div class="muted">2 referências do mapa selecionado</div></div></div><div class="comp-grid" id="compGrid"></div></div>
+          <div class="panel"><div class="actions" style="margin-top:0"><div class="left-actions"><button class="btn-secondary" id="backToPlayers">← Voltar</button></div><div class="right-actions"><button class="btn-ghost" id="restartBtn">↺ Restart</button></div></div><div class="footer-note">Sugestões atualizadas conforme os agentes escolhidos.</div></div>
         </aside>
-
         <main class="draft-main" id="draftPlayers"></main>
       </div>
     </section>
   </div>
 
   <script>
-    const appState = { step: 1, selectedMap: null, selectedPlayers: [], roles: {}, picks: {} };
-
-    const MAPS = [
-      { key:'ascent', name:'Ascent', uuid:'7eaecc1b-4337-bbf6-6ab9-04b8f06b3319' },
-      { key:'bind', name:'Bind', uuid:'2c9d57ec-4431-9c5e-2939-8f9ef6dd5cba' },
-      { key:'breeze', name:'Breeze', uuid:'2fb9a4fd-47b8-4e7d-a969-74b4046ebd53' },
-      { key:'fracture', name:'Fracture', uuid:'b529448b-4d60-346e-e89e-00a4c527a405' },
-      { key:'haven', name:'Haven', uuid:'2bee0dc9-4ffe-519b-1cbd-7fbe763a6047' },
-      { key:'icebox', name:'Icebox', uuid:'e2ad5c54-4114-a870-9641-8ea21279579a' },
-      { key:'lotus', name:'Lotus', uuid:'2fe4ed3a-450a-948b-6d6b-e89a78e680a9' },
-      { key:'pearl', name:'Pearl', uuid:'fd267378-4d1d-484f-ff52-77821ed10dc2' },
-      { key:'split', name:'Split', uuid:'d960549e-485c-e861-8d71-aa9d1aed12a2' },
-      { key:'sunset', name:'Sunset', uuid:'92584fbe-486a-b1b2-9faa-39b0f486b498' },
-      { key:'abyss', name:'Abyss', uuid:'224b0a95-48b9-f703-1bd8-67aca101a61f' },
-      { key:'corrode', name:'Corrode', uuid:null }
-    ];
-
-    const PLAYERS = [
-      { name:'Lawrence', base:'flex' },
-      { name:'Lipe', base:'flex' },
-      { name:'Luis', base:'controller' },
-      { name:'Otavio', base:'initiator', alias:'Otareco' },
-      { name:'Pether', base:'controller' },
-      { name:'Ricardo', base:'duelist' },
-      { name:'Thiago', base:'flex' },
-      { name:'Random 1', base:'random' },
-      { name:'Random 2', base:'random' },
-      { name:'Random 3', base:'random' }
-    ];
-
-    const AGENTS_BY_CLASS = {
-      duelist:['Jett','Neon','Raze','Reyna','Iso','Yoru','Phoenix','Waylay'],
-      initiator:['Sova','Fade','Breach','Gekko','KAY/O','Tejo','Skye'],
-      controller:['Omen','Clove','Astra','Brimstone','Viper','Harbor'],
-      sentinel:['Killjoy','Cypher','Deadlock','Vyse','Sage','Chamber']
-    };
-
-    const MAP_SUGGESTIONS = {
-      ascent:{ duelist:['Jett','Raze'], controller:['Omen','Clove'], sentinel:['Killjoy','Cypher'], initiator:['Sova','Breach'] },
-      bind:{ duelist:['Raze','Jett'], controller:['Brimstone','Omen'], sentinel:['Killjoy','Deadlock'], initiator:['Tejo','Breach'] },
-      breeze:{ duelist:['Jett','Neon'], controller:['Viper','Omen'], sentinel:['Cypher','Killjoy'], initiator:['Sova','Tejo'] },
-      fracture:{ duelist:['Raze','Neon'], controller:['Omen','Brimstone'], sentinel:['Cypher','Killjoy'], initiator:['Breach','Fade'] },
-      haven:{ duelist:['Jett','Neon'], controller:['Omen','Clove'], sentinel:['Killjoy','Cypher'], initiator:['Tejo','Sova'] },
-      icebox:{ duelist:['Jett','Neon'], controller:['Viper','Omen'], sentinel:['Killjoy','Cypher'], initiator:['Sova','Gekko'] },
-      lotus:{ duelist:['Raze','Yoru'], controller:['Omen','Clove'], sentinel:['Killjoy','Cypher'], initiator:['Fade','Breach'] },
-      pearl:{ duelist:['Yoru','Raze'], controller:['Omen','Clove'], sentinel:['Killjoy','Cypher'], initiator:['Fade','Tejo'] },
-      split:{ duelist:['Raze','Jett'], controller:['Omen','Brimstone'], sentinel:['Killjoy','Cypher'], initiator:['Breach','Tejo'] },
-      sunset:{ duelist:['Raze','Neon'], controller:['Omen','Clove'], sentinel:['Cypher','Killjoy'], initiator:['Breach','Skye'] },
-      abyss:{ duelist:['Jett','Neon'], controller:['Omen','Clove'], sentinel:['Killjoy','Vyse'], initiator:['Tejo','Sova'] },
-      corrode:{ duelist:['Raze','Neon'], controller:['Clove','Omen'], sentinel:['Vyse','Deadlock'], initiator:['Tejo','Breach'] }
-    };
-
-    const TIER_S = {
-      ascent:{ A:['Jett','Sova','Omen','Killjoy','KAY/O'], B:['Raze','Fade','Clove','Cypher','Skye'] },
-      bind:{ A:['Raze','Tejo','Brimstone','Deadlock','Skye'], B:['Jett','Breach','Omen','Killjoy','Sova'] },
-      breeze:{ A:['Jett','Sova','Viper','Omen','Cypher'], B:['Neon','Tejo','Viper','Omen','Killjoy'] },
-      fracture:{ A:['Raze','Breach','Omen','Cypher','Fade'], B:['Neon','Tejo','Brimstone','Killjoy','Sova'] },
-      haven:{ A:['Jett','Tejo','Omen','Killjoy','Sova'], B:['Neon','Breach','Clove','Cypher','Fade'] },
-      icebox:{ A:['Jett','Sova','Viper','Killjoy','KAY/O'], B:['Neon','Breach','Omen','Sage','Skye'] },
-      lotus:{ A:['Raze','Fade','Omen','Killjoy','Skye'], B:['Yoru','Breach','Clove','Cypher','Sova'] },
-      pearl:{ A:['Yoru','Sova','Omen','Killjoy','Tejo'], B:['Raze','Fade','Clove','Cypher','KAY/O'] },
-      split:{ A:['Raze','Breach','Omen','Killjoy','Sova'], B:['Jett','Tejo','Brimstone','Cypher','Fade'] },
-      sunset:{ A:['Raze','Skye','Omen','Cypher','Killjoy'], B:['Neon','Tejo','Clove','Sage','Breach'] },
-      abyss:{ A:['Jett','Tejo','Omen','Clove','Killjoy'], B:['Neon','Breach','Omen','Vyse','Sova'] },
-      corrode:{ A:['Raze','Tejo','Clove','Vyse','Fade'], B:['Neon','Breach','Omen','Deadlock','Sova'] }
-    };
-
-    const doubleControllerMaps = new Set(['abyss','breeze']);
-
-    const allMapsEl = document.getElementById('allMaps');
-    const playersGridEl = document.getElementById('playersGrid');
-    const buildDraftBtn = document.getElementById('buildDraftBtn');
-    const playerCountText = document.getElementById('playerCountText');
-    const countDots = document.getElementById('countDots');
-    const selectedMapLabel = document.getElementById('selectedMapLabel');
-    const draftSummary = document.getElementById('draftSummary');
-    const metaZone = document.getElementById('metaZone');
-    const compGrid = document.getElementById('compGrid');
-    const draftPlayers = document.getElementById('draftPlayers');
-
-    function init(){
-      renderMaps();
-      renderPlayers();
-      renderCountDots();
-      bindNav();
-      updateUI();
-    }
-
-    function bindNav(){
-      document.getElementById('backToMaps').onclick = () => goToStep(1);
-      document.getElementById('backToPlayers').onclick = () => goToStep(2);
-      document.getElementById('restartBtn').onclick = restartApp;
-      buildDraftBtn.onclick = buildDraft;
-    }
-
-    function restartApp(){
-      appState.step = 1;
-      appState.selectedMap = null;
-      appState.selectedPlayers = [];
-      appState.roles = {};
-      appState.picks = {};
-      renderPlayers();
-      updateUI();
-    }
-
-    function renderMaps(){
-      allMapsEl.innerHTML = '';
-      MAPS.forEach(m => allMapsEl.appendChild(createMapCard(m)));
-    }
-
-    function createMapCard(map){
-      const card = document.createElement('button');
-      card.className = 'map-card';
-      card.type = 'button';
-      card.innerHTML = `
-        <div class="map-icon">
-          ${map.uuid ? `<img src="https://media.valorant-api.com/maps/${map.uuid}/displayicon.png" alt="${map.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">` : ''}
-          <div class="map-fallback" style="${map.uuid ? 'display:none' : 'display:grid'}">${getInitials(map.name)}</div>
-        </div>
-        <div class="map-name">${map.name}</div>
-      `;
-      card.onclick = () => {
-        appState.selectedMap = map.key;
-        goToStep(2);
-      };
-      return card;
-    }
-
-    function renderPlayers(){
-      playersGridEl.innerHTML = '';
-      PLAYERS.forEach(player => {
-        const selected = appState.selectedPlayers.includes(player.name);
-        const tile = document.createElement('button');
-        tile.type = 'button';
-        tile.className = `player-tile ${selected ? 'selected' : ''}`;
-        tile.innerHTML = `
-          <div class="check">✓</div>
-          <div class="player-name">${player.name}</div>
-          <div class="player-hint">${player.alias ? `${player.base} • ${player.alias}` : player.base}</div>
-        `;
-        tile.onclick = () => togglePlayer(player.name);
-        playersGridEl.appendChild(tile);
-      });
-      updatePlayerCount();
-    }
-
-    function togglePlayer(name){
-      const list = appState.selectedPlayers;
-      const idx = list.indexOf(name);
-      if(idx >= 0) list.splice(idx, 1);
-      else {
-        if(list.length >= 5) return;
-        list.push(name);
-      }
-      renderPlayers();
-      updateUI();
-    }
-
-    function renderCountDots(){
-      countDots.innerHTML = '';
-      for(let i=0;i<5;i++){
-        const dot = document.createElement('div');
-        dot.className = 'count-dot';
-        countDots.appendChild(dot);
-      }
-    }
-
-    function updatePlayerCount(){
-      const count = appState.selectedPlayers.length;
-      playerCountText.textContent = count;
-      [...countDots.children].forEach((dot, idx) => dot.classList.toggle('filled', idx < count));
-      buildDraftBtn.style.display = count === 5 ? 'inline-flex' : 'none';
-    }
-
-    function goToStep(step){
-      if(step === 2 && !appState.selectedMap) return;
-      if(step === 3 && appState.selectedPlayers.length !== 5) return;
-      appState.step = step;
-      updateUI();
-    }
-
-    function updateUI(){
-      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-      document.getElementById(`screen-${appState.step}`).classList.add('active');
-
-      document.querySelectorAll('.map-card').forEach(c => c.classList.remove('selected'));
-      if(appState.selectedMap){
-        const map = getMap(appState.selectedMap);
-        [...document.querySelectorAll('.map-card')].find(c => c.textContent.includes(map.name))?.classList.add('selected');
-      }
-
-      selectedMapLabel.textContent = appState.selectedMap ? `Mapa: ${getMap(appState.selectedMap).name}` : '';
-      updateStepper();
-      updatePlayerCount();
-      if(appState.step === 3) renderDraftStep();
-    }
-
-    function updateStepper(){
-      const steps = [...document.querySelectorAll('.stepper .step')];
-      const connectors = [...document.querySelectorAll('.stepper .connector')];
-
-      steps.forEach((el, idx) => {
-        const n = idx + 1;
-        const dot = el.querySelector('.dot');
-        el.classList.remove('active', 'done');
-        dot.classList.remove('active', 'done');
-
-        if(n < appState.step){
-          el.classList.add('done');
-          dot.classList.add('done');
-          dot.textContent = '✓';
-        } else if(n === appState.step){
-          el.classList.add('active');
-          dot.classList.add('active');
-          dot.textContent = n;
-        } else {
-          dot.textContent = n;
-        }
-      });
-
-      connectors.forEach((c, idx) => c.classList.toggle('done', idx < appState.step - 1));
-    }
-
-    function buildDraft(){
-      appState.roles = computeRoles(appState.selectedPlayers, appState.selectedMap);
-      appState.picks = {};
-      goToStep(3);
-    }
-
-    function computeRoles(selectedPlayers, mapKey){
-      const roles = {};
-      const set = new Set(selectedPlayers);
-      const isDouble = doubleControllerMaps.has(mapKey);
-
-      selectedPlayers.forEach(n => {
-        if(isRandom(n)) roles[n] = 'random';
-      });
-
-      if(set.has('Ricardo')) roles['Ricardo'] = 'duelist';
-      if(set.has('Otavio')) roles['Otavio'] = 'initiator';
-
-      const hasP = set.has('Pether');
-      const hasL = set.has('Luis');
-      const order = ['Lawrence', 'Thiago', 'Lipe', 'Ricardo'];
-
-      if(hasP && hasL){
-        roles['Pether'] = 'controller';
-        roles['Luis'] = isDouble ? 'controller' : 'flex_sentinel';
-      } else if(hasP){
-        roles['Pether'] = 'controller';
-        if(isDouble){
-          const sec = order.find(p => set.has(p) && !roles[p]);
-          if(sec) roles[sec] = 'controller_secondary';
-        }
-      } else if(hasL){
-        roles['Luis'] = 'controller';
-        if(isDouble){
-          const sec = order.find(p => set.has(p) && !roles[p]);
-          if(sec) roles[sec] = 'controller_secondary';
-        }
-      } else {
-        let a = 0;
-        for(const p of order){
-          if(a >= (isDouble ? 2 : 1)) break;
-          if(set.has(p) && !roles[p]){
-            roles[p] = a === 0 ? 'controller' : 'controller_secondary';
-            a++;
-          }
-        }
-      }
-
-      const fill = ['sentinel', 'initiator', 'flex'];
-      for(const p of selectedPlayers){
-        if(roles[p]) continue;
-        for(const cand of fill){
-          if(cand === 'sentinel' && !Object.values(roles).includes('sentinel')){
-            roles[p] = 'sentinel';
-            break;
-          }
-          if(cand === 'initiator' && !Object.values(roles).includes('initiator')){
-            roles[p] = 'initiator';
-            break;
-          }
-          if(cand === 'flex'){
-            roles[p] = 'flex';
-            break;
-          }
-        }
-      }
-      return roles;
-    }
-
-    function renderDraftStep(){
-      const map = getMap(appState.selectedMap);
-      draftSummary.textContent = `${map.name} • ${appState.selectedPlayers.length} jogadores`;
-      renderMetaZone(map);
-      renderComps(map);
-      renderDraftPlayers();
-    }
-
-    function renderMetaZone(map){
-      metaZone.innerHTML = `<div class="meta-warning">Mapa selecionado.</div>`;
-    }
-
-    function renderComps(map){
-      compGrid.innerHTML = '';
-      const comps = TIER_S[map.key];
-      ['A','B'].forEach(label => {
-        const card = document.createElement('div');
-        card.className = 'comp-card';
-        card.innerHTML = `
-          <div class="comp-head">
-            <strong>Composição ${label}</strong>
-            <span class="tier">Tier S</span>
-          </div>
-          <div class="comp-list">
-            ${comps[label].map(a => `<span class="agent-pill">${a}</span>`).join('')}
-          </div>
-        `;
-        compGrid.appendChild(card);
-      });
-    }
-
-    function renderDraftPlayers(){
-      draftPlayers.innerHTML = '';
-      const sorted = [...appState.selectedPlayers].sort((a,b) => (isRandom(a)?0:1) - (isRandom(b)?0:1) || a.localeCompare(b,'pt-BR'));
-
-      sorted.forEach((name, idx) => {
-        const role = appState.roles[name] || 'flex';
-        const suggestions = getSuggestionsForPlayer(name);
-        const selectedAgent = appState.picks[name] || '';
-
-        const card = document.createElement('div');
-        card.className = 'player-card';
-        card.style.animationDelay = `${idx * 40}ms`;
-
-        card.innerHTML = `
-          <div class="player-head">
-            <div class="player-title">
-              <strong>${displayPlayerName(name)}</strong>
-              <span class="badge ${badgeClass(role)}">${prettyRole(role)}</span>
-            </div>
-            <div class="muted">${isRandom(name) ? 'Escolhe antes dos outros' : 'Sugestões sem repetir agentes já escolhidos'}</div>
-          </div>
-
-          <div class="suggestions">
-            ${suggestions.map(agent => `
-              <button class="chip ${isTakenByOther(name,agent) ? 'taken' : ''}" data-player="${name}" data-agent="${agent}" ${isTakenByOther(name,agent) ? 'disabled' : ''}>${agent}</button>
-            `).join('')}
-          </div>
-
-          <div class="player-controls">
-            <select data-select-player="${name}">
-              ${buildAgentSelectOptions(name, selectedAgent)}
-            </select>
-            <div class="confirm ${selectedAgent ? '' : 'empty'}">${selectedAgent ? `✓ ${selectedAgent}` : 'Nenhum agente selecionado'}</div>
-          </div>
-        `;
-        draftPlayers.appendChild(card);
-      });
-
-      draftPlayers.querySelectorAll('.chip').forEach(b => b.onclick = () => setPick(b.dataset.player, b.dataset.agent));
-      draftPlayers.querySelectorAll('select').forEach(s => s.onchange = () => setPick(s.dataset.selectPlayer, s.value || ''));
-    }
-
-    function setPick(player, agent){
-      if(!agent) delete appState.picks[player];
-      else appState.picks[player] = agent;
-      applyRandomEffects();
-      renderDraftPlayers();
-    }
-
-    function applyRandomEffects(){
-      const randomPlayers = appState.selectedPlayers.filter(isRandom);
-      const randomPickedAgents = randomPlayers.map(p => appState.picks[p]).filter(Boolean);
-      const anyRandomController = randomPickedAgents.some(a => AGENTS_BY_CLASS.controller.includes(a));
-      const anyRandomSentinel = randomPickedAgents.some(a => AGENTS_BY_CLASS.sentinel.includes(a));
-
-      if(anyRandomController){
-        Object.keys(appState.roles).forEach(player => {
-          if(!isRandom(player) && appState.roles[player] === 'controller_secondary') appState.roles[player] = 'flex';
-        });
-      }
-
-      if(anyRandomSentinel){
-        const sentinelPlayers = Object.keys(appState.roles).filter(p => !isRandom(p) && appState.roles[p] === 'sentinel');
-        sentinelPlayers.forEach((p, idx) => {
-          if(idx > 0) appState.roles[p] = 'flex';
-        });
-      }
-    }
-
-    function getSuggestionsForPlayer(player){
-      const role = appState.roles[player] || 'flex';
-      const mapKey = appState.selectedMap;
-      const alreadyTaken = new Set(getTakenAgentsExcluding(player));
-      let roleBase = role;
-      if(role === 'controller_secondary') roleBase = 'controller';
-      if(role === 'flex_sentinel') roleBase = 'sentinel';
-      if(role === 'random') roleBase = 'flex';
-
-      const mapData = MAP_SUGGESTIONS[mapKey];
-      const result = [];
-      const tryPush = a => { if(a && !result.includes(a) && !alreadyTaken.has(a)) result.push(a); };
-
-      if(mapData && mapData[roleBase]) mapData[roleBase].forEach(tryPush);
-
-      if(roleBase === 'flex'){
-        ['controller','sentinel','initiator','duelist'].forEach(g => (mapData?.[g] || AGENTS_BY_CLASS[g] || []).forEach(tryPush));
-      } else if(role === 'random'){
-        ['duelist','initiator','controller','sentinel'].forEach(g => (mapData?.[g] || AGENTS_BY_CLASS[g] || []).forEach(tryPush));
-      } else {
-        (AGENTS_BY_CLASS[normalizeRoleToClass(roleBase)] || []).forEach(tryPush);
-      }
-
-      return result.slice(0,3);
-    }
-
-    function buildAgentSelectOptions(player, current){
-      const taken = new Set(getTakenAgentsExcluding(player));
-      const grouped = {
-        Duelist: AGENTS_BY_CLASS.duelist,
-        Initiator: AGENTS_BY_CLASS.initiator,
-        Controller: AGENTS_BY_CLASS.controller,
-        Sentinel: AGENTS_BY_CLASS.sentinel
-      };
-
-      let html = '<option value="">Escolher agente...</option>';
-      Object.entries(grouped).forEach(([label, arr]) => {
-        const options = arr.filter(a => !taken.has(a) || a === current).map(a => `<option value="${a}" ${current === a ? 'selected' : ''}>${a}</option>`).join('');
-        html += `<optgroup label="${label}">${options}</optgroup>`;
-      });
-      return html;
-    }
-
-    function getTakenAgentsExcluding(player){
-      return Object.entries(appState.picks).filter(([p,a]) => p !== player && a).map(([,a]) => a);
-    }
-
-    function isTakenByOther(player, agent){
-      return getTakenAgentsExcluding(player).includes(agent);
-    }
-
-    function getMap(key){ return MAPS.find(m => m.key === key); }
-    function isRandom(name){ return name.toLowerCase().startsWith('random'); }
-    function normalizeRoleToClass(role){ return role === 'flex_sentinel' ? 'sentinel' : role === 'controller_secondary' ? 'controller' : role; }
-    function prettyRole(role){ return role === 'controller_secondary' ? 'controller 2' : role === 'flex_sentinel' ? 'flex/sentinel' : role; }
-    function badgeClass(role){ return `role-${role.replace('/', '_')}`; }
-    function displayPlayerName(name){ return name === 'Otavio' ? 'Otavio (Otareco)' : name; }
-    function getInitials(name){ return name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(); }
-
+    const appState={step:1,selectedMap:null,selectedPlayers:[],roles:{},picks:{}};
+    const MAPS=[{key:'ascent',name:'Ascent',uuid:'7eaecc1b-4337-bbf6-6ab9-04b8f06b3319'},{key:'bind',name:'Bind',uuid:'2c9d57ec-4431-9c5e-2939-8f9ef6dd5cba'},{key:'breeze',name:'Breeze',uuid:'2fb9a4fd-47b8-4e7d-a969-74b4046ebd53'},{key:'fracture',name:'Fracture',uuid:'b529448b-4d60-346e-e89e-00a4c527a405'},{key:'haven',name:'Haven',uuid:'2bee0dc9-4ffe-519b-1cbd-7fbe763a6047'},{key:'icebox',name:'Icebox',uuid:'e2ad5c54-4114-a870-9641-8ea21279579a'},{key:'lotus',name:'Lotus',uuid:'2fe4ed3a-450a-948b-6d6b-e89a78e680a9'},{key:'pearl',name:'Pearl',uuid:'fd267378-4d1d-484f-ff52-77821ed10dc2'},{key:'split',name:'Split',uuid:'d960549e-485c-e861-8d71-aa9d1aed12a2'},{key:'sunset',name:'Sunset',uuid:'92584fbe-486a-b1b2-9faa-39b0f486b498'},{key:'abyss',name:'Abyss',uuid:'224b0a95-48b9-f703-1bd8-67aca101a61f'},{key:'corrode',name:'Corrode',uuid:null}];
+    const PLAYERS=[{name:'Lawrence',base:'flex'},{name:'Lipe',base:'flex'},{name:'Luis',base:'controller'},{name:'Otavio',base:'initiator',alias:'Otareco'},{name:'Pether',base:'controller'},{name:'Ricardo',base:'duelist'},{name:'Thiago',base:'flex'},{name:'Random 1',base:'random'},{name:'Random 2',base:'random'},{name:'Random 3',base:'random'}];
+    const AGENTS_BY_CLASS={duelist:['Jett','Neon','Raze','Reyna','Iso','Yoru','Phoenix','Waylay'],initiator:['Sova','Fade','Breach','Gekko','KAY/O','Tejo','Skye'],controller:['Omen','Clove','Astra','Brimstone','Viper','Harbor','Miks'],sentinel:['Killjoy','Cypher','Deadlock','Vyse','Sage','Chamber','Veto']};
+    const MAP_SUGGESTIONS={ascent:{duelist:['Jett','Raze'],controller:['Omen','Clove'],sentinel:['Killjoy','Cypher','Veto'],initiator:['Sova','Breach']},bind:{duelist:['Raze','Jett'],controller:['Brimstone','Omen'],sentinel:['Killjoy','Deadlock','Veto'],initiator:['Tejo','Breach']},breeze:{duelist:['Jett','Neon'],controller:['Viper','Omen'],sentinel:['Cypher','Killjoy','Veto'],initiator:['Sova','Tejo']},fracture:{duelist:['Raze','Neon'],controller:['Omen','Brimstone','Miks'],sentinel:['Cypher','Killjoy','Veto'],initiator:['Breach','Fade']},haven:{duelist:['Jett','Neon'],controller:['Omen','Clove','Miks'],sentinel:['Killjoy','Cypher','Veto'],initiator:['Tejo','Sova']},icebox:{duelist:['Jett','Neon'],controller:['Viper','Omen'],sentinel:['Killjoy','Cypher','Veto'],initiator:['Sova','Gekko']},lotus:{duelist:['Raze','Yoru'],controller:['Omen','Clove','Miks'],sentinel:['Killjoy','Cypher','Veto'],initiator:['Fade','Breach']},pearl:{duelist:['Yoru','Raze'],controller:['Omen','Clove','Miks'],sentinel:['Killjoy','Cypher','Veto'],initiator:['Fade','Tejo']},split:{duelist:['Raze','Jett'],controller:['Omen','Brimstone','Miks'],sentinel:['Killjoy','Cypher','Veto'],initiator:['Breach','Tejo']},sunset:{duelist:['Raze','Neon'],controller:['Omen','Clove','Miks'],sentinel:['Cypher','Killjoy','Veto'],initiator:['Breach','Skye']},abyss:{duelist:['Jett','Neon'],controller:['Omen','Clove','Miks'],sentinel:['Killjoy','Vyse','Veto'],initiator:['Tejo','Sova']},corrode:{duelist:['Raze','Neon'],controller:['Clove','Omen','Miks'],sentinel:['Vyse','Deadlock','Veto'],initiator:['Tejo','Breach']}};
+    const TIER_S={ascent:{A:['Jett','Sova','Omen','Killjoy','KAY/O'],B:['Raze','Fade','Clove','Cypher','Skye']},bind:{A:['Raze','Tejo','Brimstone','Deadlock','Skye'],B:['Jett','Breach','Omen','Killjoy','Sova']},breeze:{A:['Jett','Sova','Viper','Omen','Cypher'],B:['Neon','Tejo','Viper','Omen','Killjoy']},fracture:{A:['Raze','Breach','Omen','Cypher','Fade'],B:['Neon','Tejo','Brimstone','Killjoy','Sova']},haven:{A:['Jett','Tejo','Omen','Killjoy','Sova'],B:['Neon','Breach','Clove','Cypher','Fade']},icebox:{A:['Jett','Sova','Viper','Killjoy','KAY/O'],B:['Neon','Breach','Omen','Sage','Skye']},lotus:{A:['Raze','Fade','Omen','Killjoy','Skye'],B:['Yoru','Breach','Clove','Cypher','Sova']},pearl:{A:['Yoru','Sova','Omen','Killjoy','Tejo'],B:['Raze','Fade','Clove','Cypher','KAY/O']},split:{A:['Raze','Breach','Omen','Killjoy','Sova'],B:['Jett','Tejo','Brimstone','Cypher','Fade']},sunset:{A:['Raze','Skye','Omen','Cypher','Killjoy'],B:['Neon','Tejo','Clove','Sage','Breach']},abyss:{A:['Jett','Tejo','Omen','Clove','Killjoy'],B:['Neon','Breach','Omen','Vyse','Sova']},corrode:{A:['Raze','Tejo','Clove','Vyse','Fade'],B:['Neon','Breach','Omen','Deadlock','Sova']}};
+    const doubleControllerMaps=new Set(['abyss','breeze']);
+    const allMapsEl=document.getElementById('allMaps'),playersGridEl=document.getElementById('playersGrid'),buildDraftBtn=document.getElementById('buildDraftBtn'),playerCountText=document.getElementById('playerCountText'),countDots=document.getElementById('countDots'),selectedMapLabel=document.getElementById('selectedMapLabel'),draftSummary=document.getElementById('draftSummary'),metaZone=document.getElementById('metaZone'),compGrid=document.getElementById('compGrid'),draftPlayers=document.getElementById('draftPlayers');
+    function init(){renderMaps();renderPlayers();renderCountDots();bindNav();updateUI()}
+    function bindNav(){document.getElementById('backToMaps').onclick=()=>goToStep(1);document.getElementById('backToPlayers').onclick=()=>goToStep(2);document.getElementById('restartBtn').onclick=restartApp;buildDraftBtn.onclick=buildDraft}
+    function restartApp(){appState.step=1;appState.selectedMap=null;appState.selectedPlayers=[];appState.roles={};appState.picks={};renderPlayers();updateUI()}
+    function renderMaps(){allMapsEl.innerHTML='';MAPS.forEach(m=>allMapsEl.appendChild(createMapCard(m)))}
+    function createMapCard(map){const card=document.createElement('button');card.className='map-card';card.type='button';card.innerHTML=`<div class="map-icon">${map.uuid?`<img src="https://media.valorant-api.com/maps/${map.uuid}/displayicon.png" alt="${map.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">`:''}<div class="map-fallback" style="${map.uuid?'display:none':'display:grid'}">${getInitials(map.name)}</div></div><div class="map-name">${map.name}</div>`;card.onclick=()=>{appState.selectedMap=map.key;goToStep(2)};return card}
+    function renderPlayers(){playersGridEl.innerHTML='';PLAYERS.forEach(player=>{const selected=appState.selectedPlayers.includes(player.name);const tile=document.createElement('button');tile.type='button';tile.className=`player-tile ${selected?'selected':''}`;tile.innerHTML=`<div class="check">✓</div><div class="player-name">${player.name}</div><div class="player-hint">${player.alias?`${player.base} • ${player.alias}`:player.base}</div>`;tile.onclick=()=>togglePlayer(player.name);playersGridEl.appendChild(tile)});updatePlayerCount()}
+    function togglePlayer(name){const list=appState.selectedPlayers;const idx=list.indexOf(name);if(idx>=0)list.splice(idx,1);else{if(list.length>=5)return;list.push(name)}renderPlayers();updateUI()}
+    function renderCountDots(){countDots.innerHTML='';for(let i=0;i<5;i++){const dot=document.createElement('div');dot.className='count-dot';countDots.appendChild(dot)}}
+    function updatePlayerCount(){const count=appState.selectedPlayers.length;playerCountText.textContent=count;[...countDots.children].forEach((dot,idx)=>dot.classList.toggle('filled',idx<count));buildDraftBtn.style.display=count===5?'inline-flex':'none'}
+    function goToStep(step){if(step===2&&!appState.selectedMap)return;if(step===3&&appState.selectedPlayers.length!==5)return;appState.step=step;updateUI()}
+    function updateUI(){document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));document.getElementById(`screen-${appState.step}`).classList.add('active');document.querySelectorAll('.map-card').forEach(c=>c.classList.remove('selected'));if(appState.selectedMap){const map=getMap(appState.selectedMap);[...document.querySelectorAll('.map-card')].find(c=>c.textContent.includes(map.name))?.classList.add('selected')}selectedMapLabel.textContent=appState.selectedMap?`Mapa: ${getMap(appState.selectedMap).name}`:'';updateStepper();updatePlayerCount();if(appState.step===3)renderDraftStep()}
+    function updateStepper(){const steps=[...document.querySelectorAll('.stepper .step')],connectors=[...document.querySelectorAll('.stepper .connector')];steps.forEach((el,idx)=>{const n=idx+1,dot=el.querySelector('.dot');el.classList.remove('active','done');dot.classList.remove('active','done');if(n<appState.step){el.classList.add('done');dot.classList.add('done');dot.textContent='✓'}else if(n===appState.step){el.classList.add('active');dot.classList.add('active');dot.textContent=n}else dot.textContent=n});connectors.forEach((c,idx)=>c.classList.toggle('done',idx<appState.step-1))}
+    function buildDraft(){appState.roles=computeRoles(appState.selectedPlayers,appState.selectedMap);appState.picks={};goToStep(3)}
+    function computeRoles(selectedPlayers,mapKey){const roles={},set=new Set(selectedPlayers),isDouble=doubleControllerMaps.has(mapKey);selectedPlayers.forEach(n=>{if(isRandom(n))roles[n]='random'});if(set.has('Ricardo'))roles['Ricardo']='duelist';if(set.has('Otavio'))roles['Otavio']='initiator';const hasP=set.has('Pether'),hasL=set.has('Luis'),order=['Lawrence','Thiago','Lipe','Ricardo'];if(hasP&&hasL){roles['Pether']='controller';roles['Luis']=isDouble?'controller':'flex_sentinel'}else if(hasP){roles['Pether']='controller';if(isDouble){const sec=order.find(p=>set.has(p)&&!roles[p]);if(sec)roles[sec]='controller_secondary'}}else if(hasL){roles['Luis']='controller';if(isDouble){const sec=order.find(p=>set.has(p)&&!roles[p]);if(sec)roles[sec]='controller_secondary'}}else{let a=0;for(const p of order){if(a>=(isDouble?2:1))break;if(set.has(p)&&!roles[p])roles[p]=a===0?'controller':'controller_secondary',a++}}const fill=['sentinel','initiator','flex'];for(const p of selectedPlayers){if(roles[p])continue;for(const cand of fill){if(cand==='sentinel'&&!Object.values(roles).includes('sentinel')){roles[p]='sentinel';break}if(cand==='initiator'&&!Object.values(roles).includes('initiator')){roles[p]='initiator';break}if(cand==='flex'){roles[p]='flex';break}}}return roles}
+    function renderDraftStep(){const map=getMap(appState.selectedMap);draftSummary.textContent=`${map.name} • ${appState.selectedPlayers.length} jogadores`;renderMetaZone(map);renderComps(map);renderDraftPlayers()}
+    function renderMetaZone(map){metaZone.innerHTML=`<div class="meta-warning">Mapa selecionado.</div>`}
+    function renderComps(map){compGrid.innerHTML='';const comps=TIER_S[map.key];['A','B'].forEach(label=>{const card=document.createElement('div');card.className='comp-card';card.innerHTML=`<div class="comp-head"><strong>Composição ${label}</strong><span class="tier">Tier S</span></div><div class="comp-list">${comps[label].map(a=>`<span class="agent-pill">${a}</span>`).join('')}</div>`;compGrid.appendChild(card)})}
+    function renderDraftPlayers(){draftPlayers.innerHTML='';const sorted=[...appState.selectedPlayers].sort((a,b)=>(isRandom(a)?0:1)-(isRandom(b)?0:1)||a.localeCompare(b,'pt-BR'));sorted.forEach((name,idx)=>{const role=appState.roles[name]||'flex',suggestions=getSuggestionsForPlayer(name),selectedAgent=appState.picks[name]||'';const card=document.createElement('div');card.className='player-card';card.style.animationDelay=`${idx*40}ms`;card.innerHTML=`<div class="player-head"><div class="player-title"><strong>${displayPlayerName(name)}</strong><span class="badge ${badgeClass(role)}">${prettyRole(role)}</span></div><div class="muted">${isRandom(name)?'Escolhe antes dos outros':'Sugestões baseadas em dados recentes'}</div></div><div class="suggestions">${suggestions.map(agent=>`<button class="chip ${isTakenByOther(name,agent)?'taken':''}" data-player="${name}" data-agent="${agent}" ${isTakenByOther(name,agent)?'disabled':''}>${agent}</button>`).join('')}</div><div class="player-controls"><select data-select-player="${name}">${buildAgentSelectOptions(name,selectedAgent)}</select><div class="confirm ${selectedAgent?'':'empty'}">${selectedAgent?`✓ ${selectedAgent}`:'Nenhum agente selecionado'}</div></div>`;draftPlayers.appendChild(card)});draftPlayers.querySelectorAll('.chip').forEach(b=>b.onclick=()=>setPick(b.dataset.player,b.dataset.agent));draftPlayers.querySelectorAll('select').forEach(s=>s.onchange=()=>setPick(s.dataset.selectPlayer,s.value||''))}
+    function setPick(player,agent){if(!agent)delete appState.picks[player];else appState.picks[player]=agent;applyRandomEffects();renderDraftPlayers()}
+    function applyRandomEffects(){const randomPlayers=appState.selectedPlayers.filter(isRandom),randomPickedAgents=randomPlayers.map(p=>appState.picks[p]).filter(Boolean),anyRandomController=randomPickedAgents.some(a=>AGENTS_BY_CLASS.controller.includes(a)),anyRandomSentinel=randomPickedAgents.some(a=>AGENTS_BY_CLASS.sentinel.includes(a));if(anyRandomController){Object.keys(appState.roles).forEach(player=>{if(!isRandom(player)&&appState.roles[player]==='controller_secondary')appState.roles[player]='flex'})}if(anyRandomSentinel){const sentinelPlayers=Object.keys(appState.roles).filter(p=>!isRandom(p)&&appState.roles[p]==='sentinel');sentinelPlayers.forEach((p,idx)=>{if(idx>0)appState.roles[p]='flex'})}}
+    function getSuggestionsForPlayer(player){const role=appState.roles[player]||'flex',mapKey=appState.selectedMap,alreadyTaken=new Set(getTakenAgentsExcluding(player));let roleBase=role;if(role==='controller_secondary')roleBase='controller';if(role==='flex_sentinel')roleBase='sentinel';if(role==='random')roleBase='flex';const mapData=MAP_SUGGESTIONS[mapKey];const result=[];const tryPush=a=>{if(a&&!result.includes(a)&&!alreadyTaken.has(a))result.push(a)};if(mapData&&mapData[roleBase])mapData[roleBase].forEach(tryPush);if(roleBase==='flex'){['controller','sentinel','initiator','duelist'].forEach(g=>(mapData?.[g]||AGENTS_BY_CLASS[g]||[]).forEach(tryPush))}else if(role==='random'){['duelist','initiator','controller','sentinel'].forEach(g=>(mapData?.[g]||AGENTS_BY_CLASS[g]||[]).forEach(tryPush))}else (AGENTS_BY_CLASS[normalizeRoleToClass(roleBase)]||[]).forEach(tryPush);return result.slice(0,3)}
+    function buildAgentSelectOptions(player,current){const taken=new Set(getTakenAgentsExcluding(player));const grouped={Duelist:AGENTS_BY_CLASS.duelist,Initiator:AGENTS_BY_CLASS.initiator,Controller:AGENTS_BY_CLASS.controller,Sentinel:AGENTS_BY_CLASS.sentinel};let html='<option value="">Escolher agente...</option>';Object.entries(grouped).forEach(([label,arr])=>{const options=arr.filter(a=>!taken.has(a)||a===current).map(a=>`<option value="${a}" ${current===a?'selected':''}>${a}</option>`).join('');html+=`<optgroup label="${label}">${options}</optgroup>`});return html}
+    function getTakenAgentsExcluding(player){return Object.entries(appState.picks).filter(([p,a])=>p!==player&&a).map(([,a])=>a)}
+    function isTakenByOther(player,agent){return getTakenAgentsExcluding(player).includes(agent)}
+    function getMap(key){return MAPS.find(m=>m.key===key)} function isRandom(name){return name.toLowerCase().startsWith('random')} function normalizeRoleToClass(role){return role==='flex_sentinel'?'sentinel':role==='controller_secondary'?'controller':role} function prettyRole(role){return role==='controller_secondary'?'controller 2':role==='flex_sentinel'?'flex':role} function badgeClass(role){return `role-${role.replace('/', '_')}`} function displayPlayerName(name){return name==='Otavio'?'Otavio (Otareco)':name} function getInitials(name){return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}
     init();
   </script>
 </body>
